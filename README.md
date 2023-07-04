@@ -7,6 +7,21 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Nuovi comandi
+```
+//Aggiungendo "-m", oltre al modello viene creata anche la migration per "Modellos"
+php artisan make:model Modello -m
+
+php artisan make:seeder ModelloTableSeeder
+
+//Aggiungendo "-r" nel controller vengono già aggiunti le definizioni dei metodi
+php artisan make:controller ModelloController -r
+
+//in Routes/web.php aggiungete:
+Route::resource("products", ProductController::class);
+```
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
