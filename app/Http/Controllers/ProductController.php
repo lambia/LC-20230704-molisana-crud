@@ -26,7 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view("products.create");
     }
 
     /**
@@ -37,7 +37,18 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        
+        $newProduct = new Product;
+        $newProduct->title = $data['title'];
+        $newProduct->description = $data['description'];
+        $newProduct->type = $data['type'];
+        $newProduct->image = $data['image'];
+        $newProduct->cooking_time = $data['cooking_time'];
+        $newProduct->weight = $data['weight'];
+        $newProduct->save();
+        
+        return redirect()->route('products.show', $newProduct->id);
     }
 
     /**
@@ -46,9 +57,11 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
+    // public function show($id)
     {
-        $product = Product::find($id);
+        // $product = Product::find($id);
+        // $product = Product::findOrFail($id);
 
         return view("products.show", compact("product") );
     }
