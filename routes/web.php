@@ -18,5 +18,7 @@ Route::get('/', [ProductController::class, "index"])->name("home");
 
 // Route::get("products", [ProductController::class, "index"]);
 // Route::get("products/{id}", [ProductController::class, "show"]);
+// Route::get("products/create", [ProductController::class, "create"]);
+// Route::post("products/store", [ProductController::class, "store"]);
 
 Route::resource("products", ProductController::class);

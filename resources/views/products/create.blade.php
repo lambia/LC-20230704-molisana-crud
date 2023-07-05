@@ -12,10 +12,14 @@
                 <input class="form-control" type="text" name="title">
 
                 <label for="name">description</label>
-                <input class="form-control" type="text" name="description">
+                <textarea name="description" class="form-control" cols="30" rows="5"></textarea>
 
                 <label for="name">type</label>
-                <input class="form-control" type="text" name="type">
+                <select class="form-control" name="type">
+                    <option value="cortissima">Pasta cortissima</option>
+                    <option value="corta">Pasta corta</option>
+                    <option value="lunga">Pasta lunga</option>
+                </select>
 
                 <label for="name">image</label>
                 <input class="form-control" type="text" name="image">
