@@ -6,6 +6,12 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+//Promemoria
+// dump() stampa i dati ma continua l'esecuzione
+// per interrompere il flusso usare dd() oppure ddd()
+// dd($product);
+// ddd($request);
+
 class ProductController extends Controller
 {
 
@@ -80,9 +86,6 @@ class ProductController extends Controller
         $newProduct->weight = $data['weight'];
         $newProduct->save();
         
-        // $product = $newProduct;
-        // return view("products.show", compact("product") );
-
         //Pattern: POST/REDIRECT/GET
         return redirect()->route('products.show', $newProduct->id);
     }
@@ -95,14 +98,6 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view("products.show", compact("product") );
-    }
-
-    public function show_old_senza_dependecy_injection($id)
-    {
-        // $product = Product::find($id);
-        $product = Product::findOrFail($id);
-
         return view("products.show", compact("product") );
     }
 
@@ -136,13 +131,11 @@ class ProductController extends Controller
         $product->weight = $data['weight'];
         $product->update();
 
-        // dump() stampa i dati e continua l'esecuzione
-        // per interrompere il flusso usare dd() oppure ddd()
-        // dd($product);
-        // dd($request);
+        //Potremmo restituire la vista, ma sarebbe sbagliato
+        //return view("products.show", compact("product") );
 
         //Pattern: POST/REDIRECT/GET
-        return redirect()->route('products.show', $product->id);
+        return redirect()->route('products.show', $product);
     }
 
     /**
