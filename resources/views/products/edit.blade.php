@@ -2,67 +2,71 @@
 
 @section('content')
 <div class="container my-3">
-    <h1>Create product</h1>
+    <h1>Edit product</h1>
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <div class="row g-4 py-4">
         <div class="col">
-            <form action="{{ route('products.update', $product->id ) }}" method="post">
+            <form action="{{ route('products.update', $product->id ) }}" method="post" class="needs-validation">
                 @csrf
 
                 @method("PUT")
             
-                <label for="name">title</label>
-                <input class="form-control" type="text" name="title" value="{{$product->title}}">
+                <label>title</label>
+                <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" value="{{ old("title") ?? $product->title}}">
+                {{-- OPPURE: ...value="{{ old("title") ? old("title") : $product->title}}"> --}}
+                @error("title")
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
 
-                <label for="name">description</label>
-                <textarea name="description" class="form-control" cols="30" rows="5">{{$product->description}}</textarea>
+                <label>description</label>
+                <textarea name="description" class="form-control @error('description') is-invalid @enderror" cols="30" rows="5">{{ old('description') ?? $product->description }}</textarea>
+                @error("description")
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
 
-                {{-- Senza direttiva @selected dovremmo gestire manualmente le casistiche: è orribile e non sostenibile --}}
-                {{--
-                <label for="name">type</label>
-                <select class="form-control" name="type">
-                    @if ($product->type=="cortissima")
-                        <option value="cortissima" selected >Pasta cortissima</option>
-                        <option value="corta" >Pasta corta</option>
-                        <option value="lunga" >Pasta lunga</option>
-                    @elseif ($product->type=="corta")
-                        <option value="cortissima" >Pasta cortissima</option>
-                        <option value="corta" selected>Pasta corta</option>
-                        <option value="lunga" >Pasta lunga</option>
-                    @elseif ($product->type=="lunga")
-                        <option value="cortissima" >Pasta cortissima</option>
-                        <option value="corta" >Pasta corta</option>
-                        <option value="lunga" selected>Pasta lunga</option>
-                    @endif
+                <label>type</label>
+                <select class="form-control @error('type') is-invalid @enderror" name="type">
+                    {{-- il metodo old() si può usare vari modi:
+                        1. old("type") --> restituisce un precedente valore di "type" immesso nel form
+                        2. old("type", "valore di default") --> come il precedente, ma in caso non ci siano valori precedenti usa "valore di default"
+                        3. old("type", $product->type) --> come il precedente, ma come valore di default usa quanto c'è ATTUALMENTE scritto nel prodotto
+                        4. old("type", $product) --> come il precedente, sintassi abbreviata: cerca "type" nei dati usati nell'ultimo form OPPURE nel modello attuale
+                        --}}
+                    <option value="cortissima" @selected(old('type', $product) == 'cortissima') >Pasta cortissima</option>
+                    <option value="corta" @selected(old('type', $product) == 'corta') >Pasta corta</option>
+                    <option value="lunga" @selected(old('type', $product) == 'lunga') >Pasta lunga</option>
                 </select>
-                --}}
+                @error("type")
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
 
-                <label for="name">type</label>
-                <select class="form-control" name="type">
-                    <option value="cortissima" @selected($product->type=="cortissima") >Pasta cortissima</option>
-                    <option value="corta" @selected($product->type=="corta") >Pasta corta</option>
-                    <option value="lunga" @selected($product->type=="lunga") >Pasta lunga</option>
-                </select>
-                
-                {{-- @php
-                    //questo array potrebbe provenire da config("tipiPasta") oppure da altro dato su db (esempio Model PastaType)
-                    $tipiPasta = ["cortissima", "corta", "lunga"];
-                @endphp
+                <label>image</label>
+                <input class="form-control @error('image') is-invalid @enderror" type="text" name="image" value="{{ old('image') ?? $product->image }}">
+                @error("image")
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
 
-                <label for="name">type</label>
-                <select class="form-control" name="type">
-                    @foreach ($tipiPasta as $tipoPasta)
-                        <option value="{{$tipoPasta}}" @selected($product->type==$tipoPasta) >Pasta {{$tipoPasta}}</option>
-                    @endforeach
-                </select> --}}
+                <label>cooking_time</label>
+                <input class="form-control @error('cooking_time') is-invalid @enderror" type="text" name="cooking_time" value="{{ old('cooking_time') ?? $product->cooking_time }}">
+                @error("cooking_time")
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
 
-                <label for="name">image</label>
-                <input class="form-control" type="text" name="image" value="{{$product->image}}">
-
-                <label for="name">cooking_time</label>
-                <input class="form-control" type="text" name="cooking_time" value="{{$product->cooking_time}}">
-
-                <label for="name">weight</label>
-                <input class="form-control" type="text" name="weight" value="{{$product->weight}}">
+                <label>weight</label>
+                <input class="form-control @error('weight') is-invalid @enderror" type="text" name="weight" value="{{ old('weight') ?? $product->weight }}">
+                @error("weight")
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
 
                 <input class="form-control mt-4 btn btn-primary" type="submit" value="Invia">
              </form>
