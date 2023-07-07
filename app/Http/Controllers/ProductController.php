@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 //Promemoria
 // dump() stampa i dati ma continua l'esecuzione
@@ -37,53 +37,18 @@ class ProductController extends Controller
         return view("products.create");
     }
 
-    private function validateProduct($data) {
-        $validator = Validator::make($data, [
-            "title" => "required|min:5|max:50",
-            "description" => "min:5|max:65535",
-            "type" => "required|max:20",
-            "image" => "max:255",
-            "description" => "min:5|max:255",
-            "cooking_time" => "required|max:20",
-            "weight" => "required|max:20",
-        ], [
-            "title.required" => "Il titolo è obbligatorio",
-            "title.min" => "Il titolo deve essere almeno di :min caratteri"
-        ])->validate();
-
-        return $validator;
-    }
-
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\StoreProductRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        /*
-        // Validazione in linea tramite metodo Laravel
-        $request->validate([
-            "title" => "required|min:5|max:50",
-            "description" => "min:5|max:65535",
-            "type" => "required|max:20",
-            "description" => "min:5|max:255",
-            "cooking_time" => "required|max:20",
-            "weight" => "required|max:20",
-        ]);
-        $data = $request->all();
-        */
-
-        $data = $this->validateProduct( $request->all() );
-
-        $newProduct = new Product;
-        $newProduct->title = $data['title'];
-        $newProduct->description = $data['description'];
-        $newProduct->type = $data['type'];
-        $newProduct->image = $data['image'];
-        $newProduct->cooking_time = $data['cooking_time'];
-        $newProduct->weight = $data['weight'];
+        $data = $request->validated();
+        
+        $newProduct = new Product();
+        $newProduct->fill( $data );
         $newProduct->save();
         
         //Pattern: POST/REDIRECT/GET
@@ -115,27 +80,18 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\UpdateProductRequest  $request
      * @param  Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        $data = $this->validateProduct( $request->all() );
-
-        $product->title = $data['title'];
-        $product->description = $data['description'];
-        $product->type = $data['type'];
-        $product->image = $data['image'];
-        $product->cooking_time = $data['cooking_time'];
-        $product->weight = $data['weight'];
+        $data = $request->validated();
+        $product->fill($data);
         $product->update();
 
-        //Potremmo restituire la vista, ma sarebbe sbagliato
-        //return view("products.show", compact("product") );
-
-        //Pattern: POST/REDIRECT/GET
-        return redirect()->route('products.show', $product);
+        return to_route("products.show", $product);
+        // return redirect()->route('products.show', $product);
     }
 
     /**

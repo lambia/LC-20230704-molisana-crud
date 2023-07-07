@@ -22,7 +22,7 @@
                 @method("PUT")
             
                 <label>title</label>
-                <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" value="{{ old("title") ?? $product->title}}">
+                <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" value="{{ old("title") ?? $product->title}}" required>
                 {{-- OPPURE: ...value="{{ old("title") ? old("title") : $product->title}}"> --}}
                 @error("title")
                     <div class="invalid-feedback">{{$message}}</div>
@@ -41,7 +41,7 @@
                         2. old("type", "valore di default") --> come il precedente, ma in caso non ci siano valori precedenti usa "valore di default"
                         3. old("type", $product->type) --> come il precedente, ma come valore di default usa quanto c'è ATTUALMENTE scritto nel prodotto
                         4. old("type", $product) --> come il precedente, sintassi abbreviata: cerca "type" nei dati usati nell'ultimo form OPPURE nel modello attuale
-                        --}}
+                    --}}
                     <option value="cortissima" @selected(old('type', $product) == 'cortissima') >Pasta cortissima</option>
                     <option value="corta" @selected(old('type', $product) == 'corta') >Pasta corta</option>
                     <option value="lunga" @selected(old('type', $product) == 'lunga') >Pasta lunga</option>

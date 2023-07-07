@@ -20,10 +20,10 @@
                 @csrf
             
                 <label>title</label>
-                <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" value="{{ old("title") }}">
+                <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" value="{{ old("title") }}" required>
                 @error("title")
                     <div class="invalid-feedback">{{$message}}</div>
-                @enderror
+                @endif
 
                 <label>description</label>
                 <textarea name="description" class="form-control @error('description') is-invalid @enderror" cols="30" rows="5">{{ old("description") }}</textarea>
